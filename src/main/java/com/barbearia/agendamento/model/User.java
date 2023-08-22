@@ -1,5 +1,6 @@
 package com.barbearia.agendamento.model;
 
+import com.barbearia.agendamento.dto.UsersDTO;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,4 +20,8 @@ public class User {
     private String email;
     private String password;
 
+    public User(UsersDTO data) {
+        this.email = data.email();
+        this.password = data.password();
+    }
 }
