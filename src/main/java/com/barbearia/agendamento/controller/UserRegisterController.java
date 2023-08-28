@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/register")
-public class Register {
+public class UserRegisterController {
 
     @Autowired
     private UserRepository repository;

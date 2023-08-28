@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id")
-public class Costumer {
+public class Customer {
 
     @Id
     private String id;
