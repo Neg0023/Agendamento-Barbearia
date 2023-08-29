@@ -1,5 +1,6 @@
 package com.barbearia.agendamento.model;
 
+import com.barbearia.agendamento.dto.CustomerDTO;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,4 +20,10 @@ public class Customer {
     private String name;
     private String cpf;
     private String phoneNumber;
+
+    public Customer(CustomerDTO data) {
+        this.name = data.name();
+        this.cpf = data.cpf();
+        this.phoneNumber = data.phoneNumber();
+    }
 }
