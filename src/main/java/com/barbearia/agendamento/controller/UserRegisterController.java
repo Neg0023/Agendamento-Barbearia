@@ -1,6 +1,5 @@
 package com.barbearia.agendamento.controller;
 
-import com.barbearia.agendamento.dto.DetailedUserDTO;
 import com.barbearia.agendamento.dto.UsersDTO;
 import com.barbearia.agendamento.model.User;
 import com.barbearia.agendamento.repository.UserRepository;
@@ -27,6 +26,6 @@ public class UserRegisterController {
         repository.save(user);
         var uri = uriComponentsBuilder.path("register/{id}").buildAndExpand(user.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(new DetailedUserDTO(user));
+        return ResponseEntity.created(uri).body(user);
     }
 }
