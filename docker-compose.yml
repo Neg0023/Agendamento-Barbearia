@@ -1,0 +1,17 @@
+version: '4'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'
+    container_name: mongo-db-facul
+    restart: always
+    networks:
+      - barber
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: barber
+      MONGO_INITDB_ROOT_PASSWORD: senha123
+
+networks:
+  barber:
+    driver: bridge
