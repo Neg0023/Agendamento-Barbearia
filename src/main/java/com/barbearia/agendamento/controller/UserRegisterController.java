@@ -22,7 +22,7 @@ public class UserRegisterController {
     @PostMapping
     public ResponseEntity register(@RequestBody @Valid UsersDTO data, UriComponentsBuilder uriComponentsBuilder) {
 
-        var user = new User(data);
+        var user = new User(data.getEmail(), data.getPassword());
         repository.save(user);
         var uri = uriComponentsBuilder.path("register/{id}").buildAndExpand(user.getId()).toUri();
 

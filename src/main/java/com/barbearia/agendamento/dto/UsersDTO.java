@@ -3,12 +3,17 @@ package com.barbearia.agendamento.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record UsersDTO(
-        String id,
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class UsersDTO {
+
         @NotBlank
         @Email
-        String email,
-        @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()])(?=.{8,16}).*$")
-        String password) {
+        private String email;
+        private String password;
 }
