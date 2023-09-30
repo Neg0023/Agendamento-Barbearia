@@ -2,6 +2,8 @@ package com.barbearia.agendamento.controller;
 
 
 import com.barbearia.agendamento.dto.UsersDTO;
+import com.barbearia.agendamento.model.User;
+import com.barbearia.agendamento.services.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,13 @@ public class AutenticacaoController {
     @Autowired
     private AuthenticationManager manager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid UsersDTO dados) {
         var token = new UsernamePasswordAuthenticationToken(dados.getEmail(), dados.getPassword());
         var authentication = manager.authenticate(token);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(tokenService.gerarToken((User) authentication.getPrincipal()));
     }
 }
