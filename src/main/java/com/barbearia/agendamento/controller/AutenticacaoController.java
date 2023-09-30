@@ -1,6 +1,7 @@
 package com.barbearia.agendamento.controller;
 
 
+import com.barbearia.agendamento.dto.TokenJWTDTO;
 import com.barbearia.agendamento.dto.UsersDTO;
 import com.barbearia.agendamento.model.User;
 import com.barbearia.agendamento.services.TokenService;
@@ -26,8 +27,10 @@ public class AutenticacaoController {
 
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid UsersDTO dados) {
-        var token = new UsernamePasswordAuthenticationToken(dados.getEmail(), dados.getPassword());
-        var authentication = manager.authenticate(token);
-        return ResponseEntity.ok(tokenService.gerarToken((User) authentication.getPrincipal()));
+        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.getEmail(), dados.getPassword());
+        var authentication = manager.authenticate(authenticationToken);
+        var tokenJWT = tokenService.gerarToken((User) authentication.getPrincipal());
+
+        return ResponseEntity.ok(new TokenJWTDTO(tokenJWT));
     }
 }
