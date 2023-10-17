@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/customer")
 @Slf4j
@@ -32,5 +34,11 @@ public class CustomerController {
     public ResponseEntity<Customer> getRegister(@PathVariable String id){
         var customer = repository.findById(id).orElseThrow(() -> new ClienteNaoExiste("Cliente não existe"));
         return ResponseEntity.ok(customer);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Customer>> getAllRegister(){
+        var listCustomer = repository.findAll();
+        return ResponseEntity.ok().body(listCustomer);
     }
 }
