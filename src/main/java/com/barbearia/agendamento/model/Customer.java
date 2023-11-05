@@ -1,10 +1,7 @@
 package com.barbearia.agendamento.model;
 
 import com.barbearia.agendamento.dto.CustomerDTO;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id")
+@Builder
 public class Customer {
 
     @Id

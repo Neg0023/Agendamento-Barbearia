@@ -41,4 +41,30 @@ public class CustomerController {
         var listCustomer = repository.findAll();
         return ResponseEntity.ok().body(listCustomer);
     }
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<?> updateClient(@RequestBody CustomerDTO customerDTO, @PathVariable String id){
+        repository.findById(id).orElseThrow(() -> new ClienteNaoExiste("Cliente não existe"));
+        var customer = Customer.builder()
+                .id(id)
+                .name(customerDTO.nome())
+                .cpf(customerDTO.cpf())
+                .cep(customerDTO.cep())
+                .bairro(customerDTO.bairro())
+                .cidade(customerDTO.cidade())
+                .email(customerDTO.email())
+                .estado(customerDTO.estado())
+                .logradouro(customerDTO.logradouro())
+                .numero(customerDTO.numero())
+                .sobreNome(customerDTO.sobreNome())
+                .telefone(customerDTO.telefone())
+                .build();
+        var response = repository.save(customer);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public void deleteClient(@PathVariable String id){
+        repository.findById(id).orElseThrow(() -> new ClienteNaoExiste("Cliente não existe"));
+        repository.deleteById(id);
+    }
 }
