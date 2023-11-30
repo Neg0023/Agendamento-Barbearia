@@ -2,12 +2,14 @@ package com.barbearia.agendamento.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.br.CPF;
 
 public record CustomerDTO(
         @NotBlank
         String nome,
         @NotBlank
         @Pattern(regexp = "\\d{11}")
+        @CPF
         String cpf,
         @NotBlank
         String telefone,
