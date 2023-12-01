@@ -14,12 +14,22 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExeptionHandlerRequest{
 
-    @ExceptionHandler(value = {ClienteNaoExiste.class, HorarioExiste.class})
-    public ResponseEntity<ErrorDto> badRequest(Exception ex){
+    @ExceptionHandler(HorarioExiste.class)
+    public ResponseEntity<ErrorDto> badRequest(HorarioExiste ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ErrorDto.builder()
                         .error(ex.getMessage())
                         .code(HttpStatus.BAD_REQUEST.value())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(ClienteNaoExiste.class)
+    public ResponseEntity<ErrorDto> notFound(ClienteNaoExiste ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                ErrorDto.builder()
+                        .error(ex.getMessage())
+                        .code(HttpStatus.NOT_FOUND.value())
                         .build()
         );
     }

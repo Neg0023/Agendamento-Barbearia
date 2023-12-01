@@ -14,6 +14,7 @@ public class Agendamento {
     @Id
     private String id;
     private String cpf;
+    private String nome;
     private String horario;
     private String formaPagamento;
     private String statusPagamento;

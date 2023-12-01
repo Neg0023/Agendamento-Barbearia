@@ -6,17 +6,17 @@ import com.barbearia.agendamento.dto.AgendamentoModel;
 import com.barbearia.agendamento.model.Agendamento;
 import com.barbearia.agendamento.repository.AgendamentoRepository;
 import com.barbearia.agendamento.repository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 public class AgendamentoService {
 
     @Autowired
@@ -26,18 +26,28 @@ public class AgendamentoService {
     private CustomerRepository customerRepository;
 
     public Agendamento agendamento(AgendamentoModel agendamento){
-        customerRepository.findByCpf(agendamento.getCpf()).orElseThrow(() -> new ClienteNaoExiste("Cliente não existe"));
+        var customer = customerRepository.findByCpf(agendamento.getCpf()).orElseThrow(() -> new ClienteNaoExiste("Cliente não existe"));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        var data = LocalDateTime.parse(agendamento.getHorario(), formatter).toString();
+        SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        SimpleDateFormat formatoSaida = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-        if(agendamentoRepository.existsByHorario(data)){
+        String dataFormatada = null;
+        try {
+            Date data = formatoEntrada.parse(agendamento.getHorario());
+            dataFormatada = formatoSaida.format(data);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(agendamentoRepository.existsByHorario(dataFormatada)){
+            log.error("Horario já reservado");
             throw new HorarioExiste("Horario já reservado");
         }
 
         var buildAgendamento = Agendamento.builder()
                 .cpf(agendamento.getCpf())
-                .horario(data)
+                .nome(customer.getName().concat(" " + customer.getSobreNome()))
+                .horario(dataFormatada)
                 .formaPagamento(agendamento.getFormaPagamento())
                 .statusPagamento(agendamento.getStatusPagamento())
                 .build();
@@ -46,19 +56,6 @@ public class AgendamentoService {
 
     public List<Agendamento> getAgendamento(){
         var list = agendamentoRepository.findAll();
-        list.stream().forEach(item ->{
-            SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            SimpleDateFormat formatoSaida = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
-            Date dataObj = null;
-            try {
-                dataObj = formatoEntrada.parse(item.getHorario());
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-            String dataFormatada = formatoSaida.format(dataObj);
-            item.setHorario(dataFormatada);
-        });
         return list;
     }
 }
